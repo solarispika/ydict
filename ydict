@@ -16,6 +16,8 @@ import random
 import ConfigParser
 from multiprocessing import Process, Queue, Pool
 import xml.etree.ElementTree as ET
+import readline
+import atexit
 
 
 version="ydict 1.3.4"
@@ -382,7 +384,13 @@ if __name__ == '__main__':
 	elif options.listall:
 		wordlist()
 		cleanup()
-	        
+
+	histfile = os.path.join(os.path.expanduser("~"), ".ydict_hist")
+	try:
+		readline.read_history_file(histfile)
+	except IOError:
+		pass
+	atexit.register(readline.write_history_file, histfile)
 	while(1):
 		try:
 			word=raw_input("<PyDict> ")
